@@ -28,7 +28,10 @@ class Slidable extends StatefulWidget {
     this.dragStartBehavior = DragStartBehavior.down,
     this.useTextDirection = true,
     required this.child,
+    this.onSliderOpening,
   }) : super(key: key);
+
+  final VoidCallback? onSliderOpening;
 
   /// Whether this slidable is interactive.
   ///
@@ -254,6 +257,7 @@ class _SlidableState extends State<Slidable>
     );
 
     return SlidableGestureDetector(
+      onSliderOpening: widget.onSliderOpening,
       enabled: widget.enabled,
       controller: controller,
       direction: widget.direction,

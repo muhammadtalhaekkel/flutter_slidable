@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
 import 'controller.dart';
-
+import 'dart:developer';
 // INTERNAL USE
 // ignore_for_file: public_member_api_docs
 
@@ -13,6 +13,7 @@ class SlidableGestureDetector extends StatefulWidget {
     required this.controller,
     required this.direction,
     required this.child,
+    this.onSliderOpening,
     this.dragStartBehavior = DragStartBehavior.start,
   }) : super(key: key);
 
@@ -20,6 +21,7 @@ class SlidableGestureDetector extends StatefulWidget {
   final Widget child;
   final Axis direction;
   final bool enabled;
+  final VoidCallback? onSliderOpening;
 
   /// Determines the way that drag start behavior is handled.
   ///
@@ -56,6 +58,7 @@ class _SlidableGestureDetectorState extends State<SlidableGestureDetector> {
   Widget build(BuildContext context) {
     final canDragHorizontally = directionIsXAxis && widget.enabled;
     final canDragVertically = !directionIsXAxis && widget.enabled;
+
     return GestureDetector(
       onHorizontalDragStart: canDragHorizontally ? handleDragStart : null,
       onHorizontalDragUpdate: canDragHorizontally ? handleDragUpdate : null,
@@ -95,7 +98,9 @@ class _SlidableGestureDetectorState extends State<SlidableGestureDetector> {
     final primaryDelta = directionIsXAxis ? delta.dx : delta.dy;
     final gestureDirection =
         primaryDelta >= 0 ? GestureDirection.opening : GestureDirection.closing;
-
+    if (gestureDirection == GestureDirection.closing) {
+      if (widget.onSliderOpening != null) widget.onSliderOpening!();
+    }
     widget.controller.dispatchEndGesture(
       details.primaryVelocity,
       gestureDirection,
