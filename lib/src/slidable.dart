@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/src/auto_close_behavior.dart';
@@ -29,9 +31,11 @@ class Slidable extends StatefulWidget {
     this.useTextDirection = true,
     required this.child,
     this.onSliderOpening,
+    this.onSliderClosing,
   }) : super(key: key);
 
   final VoidCallback? onSliderOpening;
+  final VoidCallback? onSliderClosing;
 
   /// Whether this slidable is interactive.
   ///
@@ -258,6 +262,7 @@ class _SlidableState extends State<Slidable>
 
     return SlidableGestureDetector(
       onSliderOpening: widget.onSliderOpening,
+      onSliderClosing: widget.onSliderClosing,
       enabled: widget.enabled,
       controller: controller,
       direction: widget.direction,

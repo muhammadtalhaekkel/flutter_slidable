@@ -14,6 +14,7 @@ class SlidableGestureDetector extends StatefulWidget {
     required this.direction,
     required this.child,
     this.onSliderOpening,
+    this.onSliderClosing,
     this.dragStartBehavior = DragStartBehavior.start,
   }) : super(key: key);
 
@@ -22,6 +23,7 @@ class SlidableGestureDetector extends StatefulWidget {
   final Axis direction;
   final bool enabled;
   final VoidCallback? onSliderOpening;
+  final VoidCallback? onSliderClosing;
 
   /// Determines the way that drag start behavior is handled.
   ///
@@ -100,6 +102,9 @@ class _SlidableGestureDetectorState extends State<SlidableGestureDetector> {
         primaryDelta >= 0 ? GestureDirection.opening : GestureDirection.closing;
     if (gestureDirection == GestureDirection.closing) {
       if (widget.onSliderOpening != null) widget.onSliderOpening!();
+    }
+    if (gestureDirection == GestureDirection.opening) {
+      if (widget.onSliderClosing != null) widget.onSliderClosing!();
     }
     widget.controller.dispatchEndGesture(
       details.primaryVelocity,
